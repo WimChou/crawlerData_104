@@ -2,7 +2,6 @@ from selenium import webdriver
 from selenium.webdriver.common.action_chains import ActionChains
 import time
 from time import sleep
-import csv
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
