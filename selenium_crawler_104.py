@@ -5,6 +5,7 @@ from time import sleep
 import csv
 import requests
 from bs4 import BeautifulSoup
+import pandas as pd
 # from selenium.webdriver.common.keys import Keys
 #%%
 driver = webdriver.Chrome("C:/Users/LAK/Desktop/chromedriver.exe")
@@ -38,9 +39,9 @@ sleep(stop)
 # titles = driver.find_elements_by_partial_link_text("有限公司")
 # sleep(stop)
 #%% 加入滾輪操作
-for i in range(scroll_count): 
-    driver.execute_script("window.scrollTo(0, document.body.scrollHeight);") # excute scroll 滾動網頁
-    sleep(stop)
+# for i in range(scroll_count): 
+#     driver.execute_script("window.scrollTo(0, document.body.scrollHeight);") # excute scroll 滾動網頁
+#     sleep(stop)
 
 titles = driver.find_elements_by_class_name("info-job__text.jb-link.jb-link-blue.jb-link-blue--visited.text-truncate.d-inline-block.h2") # 空白要改成.
 sleep(stop)
@@ -81,16 +82,13 @@ for i in name:
     except AttributeError:
       vat.append(0) # 若查詢不到值，則鍵入0
 #%% 匯出至CSV檔
-data = []   
-with open("104_data.csv", "w", encoding="utf-8-sig", newline="") as file:
-    w = csv.writer(file, delimiter = ",")
-    for i in range(len(add)):
-        data.append([])
-        data[i].append(name[i])
-        data[i].append(vat[i])
-        data[i].append(keyman[i])
-        data[i].append(phone_num[i])
-        data[i].append(add[i])
-        w.writerow(data[i])
+df = pd.DataFrame() 
+df["公司名稱"] = name
+df["統一編號"] = vat
+df["聯絡人"] = keyman
+df["聯絡電話"] = phone_num
+df["公司地址"] = add
+
+df.to_csv("104_datas.csv", index=True, encoding="utf-8-sig")
 
 print(time.ctime(time.time()))
